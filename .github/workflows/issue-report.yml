@@ -22,7 +22,7 @@ jobs:
         with:
           script: |
             const fs = require('fs')
-            const path = ${{GITHUB_WORKSPACE}}/data.csv
+            const path = $GITHUB_WORKSPACE/data.csv
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
