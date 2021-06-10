@@ -33,7 +33,7 @@ jobs:
               console.log(issue.title)
               console.log(issue.number)
               console.log(line)
-              fs.writeFile(path,line,'a')
+              fs.writeFile(path,line,{flag: 'a'})
             }
       - name: Check for file
         run: "ls $GITHUB_WORKSPACE/"
