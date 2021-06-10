@@ -26,8 +26,8 @@ jobs:
             const fs = require('fs')
             const WORKSPACE = process.env
             console.log("LOGGING...")
-            console.log(WORKSPACE)
-            const path = "${WORKSPACE}/data.csv"
+            console.log(process.env.GITHUB_WORKSPACE)
+            const path = process.env.GITHUB_WORKSPACE+"/data.csv"
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
