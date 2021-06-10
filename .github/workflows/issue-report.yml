@@ -25,11 +25,11 @@ jobs:
           script: |
             const fs = require('fs')
             const WORKSPACE = process.env
-            const path = ${WORKSPACE}/data.csv
+            const path = "${WORKSPACE}/data.csv"
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
-            const line = issue.title +','+ issue.number
+              const line = issue.title +','+ issue.number
               console.log(issue.title)
               console.log(issue.number)
               console.log(line)
