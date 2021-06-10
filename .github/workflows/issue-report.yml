@@ -19,10 +19,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo issues by label: ${{ fromJson(steps.get_issues_by_label.outputs.data) }}"
       - uses: actions/github-script@v4
+        env: 
+          WORKSPACE: $GITHUB_WORKSPACE
         with:
           script: |
             const fs = require('fs')
-            const path = $GITHUB_WORKSPACE/data.csv
+            const { WORKSPACE } = process.env
+            const path = ${WORKSPACE}/data.csv
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
