@@ -22,6 +22,7 @@ jobs:
         with:
           script: |
             const fs = require('fs')
+            const path = $GITHUB_WORKSPACE/data.csv
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
@@ -29,4 +30,7 @@ jobs:
               console.log(issue.title)
               console.log(issue.number)
               console.log(line)
+              fs.write(path,line,'a')
             }
+      - name: Check for file
+        run: "ls $GITHUB_WORKSPACE/"
