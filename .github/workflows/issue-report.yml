@@ -25,6 +25,8 @@ jobs:
           script: |
             const fs = require('fs')
             const WORKSPACE = process.env
+            console.log("LOGGING...")
+            console.log(WORKSPACE)
             const path = "${WORKSPACE}/data.csv"
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
