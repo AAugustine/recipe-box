@@ -24,7 +24,7 @@ jobs:
         with:
           script: |
             const fs = require('fs')
-            const { WORKSPACE } = process.env
+            const WORKSPACE = process.env
             const path = ${WORKSPACE}/data.csv
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
