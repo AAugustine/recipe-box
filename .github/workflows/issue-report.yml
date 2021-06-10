@@ -20,7 +20,7 @@ jobs:
       - run: "echo issues by label: ${{ fromJson(steps.get_issues_by_label.outputs.data) }}"
       - uses: actions/github-script@v4
         env: 
-          WORKSPACE: $GITHUB_WORKSPACE
+          WORKSPACE: "$GITHUB_WORKSPACE"
         with:
           script: |
             const fs = require('fs')
