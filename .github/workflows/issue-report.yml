@@ -33,4 +33,4 @@ jobs:
               fs.write(path,line,'a')
             }
       - name: Check for file
-        run: "ls $GITHUB_WORKSPACE/"
+        run: "ls {{$GITHUB_WORKSPACE}}/"
