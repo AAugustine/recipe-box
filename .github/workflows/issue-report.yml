@@ -6,6 +6,8 @@ jobs:
   reportOnIssuesByLabel:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Workspace
+        run: echo "$GITHUB_WORKSPACE"
       - uses: octokit/request-action@v2.x
         id: get_issues_by_label
         with:
