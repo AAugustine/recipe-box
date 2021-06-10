@@ -19,23 +19,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo issues by label: ${{ fromJson(steps.get_issues_by_label.outputs.data) }}"
       - uses: actions/github-script@v4
-        env: 
-          WORKSPACE: $GITHUB_WORKSPACE
         with:
           script: |
             const fs = require('fs')
-            const WORKSPACE = process.env
-            console.log("LOGGING...")
-            console.log(process.env.GITHUB_WORKSPACE)
             const path = process.env.GITHUB_WORKSPACE+"/data.csv"
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
               const line = issue.title +','+ issue.number.toString()
-              console.log(issue.title)
-              console.log(issue.number)
-              console.log(line)
               fs.writeFile(path,line,{flag: 'a'}, err=> {})
             }
       - name: Check for file
         run: "ls -la  $GITHUB_WORKSPACE"
+      - name: Export CSV report
+        uses: actions/upload-artifact@v2
+        with:
+          name: issue-report
+          path: $GITHUB_WORKSPACE +"/data.csv"
