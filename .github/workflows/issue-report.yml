@@ -21,9 +21,12 @@ jobs:
       - uses: actions/github-script@v4
         with:
           script: |
+            const fs = require('fs')
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
+            const line = issue.title +','+ issue.number
               console.log(issue.title)
               console.log(issue.number)
+              console.log(line)
             }
