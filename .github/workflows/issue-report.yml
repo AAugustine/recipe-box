@@ -36,5 +36,4 @@ jobs:
               fs.writeFile(path,line,{flag: 'a'}, err=> {})
             }
       - name: Check for file
-        run: | 
-          ls "$GITHUB_WORKSPACE"
+        run: "ls -la  $GITHUB_WORKSPACE"
