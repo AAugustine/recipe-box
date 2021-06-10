@@ -17,4 +17,4 @@ jobs:
           repo: recipe-box
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo issues by label: ${{ steps.get_issues_by_label.outputs.data }}"
+      - run: "echo issues by label: ${{ fromJson(steps.get_issues_by_label.outputs.data) }}"
