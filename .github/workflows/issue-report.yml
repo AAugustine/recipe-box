@@ -1,0 +1,18 @@
+name: Create report based on issue labels
+on:
+  workflow_dispatch:
+
+jobs:
+  reportOnIssuesByLabel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: get_issues_by_label
+        with:
+          route: GET /repos/{owner}/{repo}/issues
+          label: 1 point
+          owner: aaugustine
+          repo: recipe-box
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo issues by label: ${{ steps.get_issues_by_label.outputs.data }}"
