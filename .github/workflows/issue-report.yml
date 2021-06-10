@@ -29,7 +29,7 @@ jobs:
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
-              const line = issue.title +','+ issue.number
+              const line = issue.title +','+ issue.number.toString()
               console.log(issue.title)
               console.log(issue.number)
               console.log(line)
