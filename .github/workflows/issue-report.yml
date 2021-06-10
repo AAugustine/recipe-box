@@ -9,7 +9,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: get_issues_by_label
         with:
-          route: GET /repos/{owner}/{repo}/issues
+          route: GET /repos/{owner}/{repo}/issues?labels={label}
           label: 1 point
           owner: aaugustine
           repo: recipe-box
