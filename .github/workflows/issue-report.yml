@@ -18,3 +18,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo issues by label: ${{ fromJson(steps.get_issues_by_label.outputs.data) }}"
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const issues = ${{ fromJson(steps.get_issues_by_label.outputs.data) }}
+            
+            for (const issue of issues) {
+              console.log(issue.title)
+              console.log(issue.number)
+            }
