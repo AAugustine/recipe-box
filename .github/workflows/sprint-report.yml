@@ -26,4 +26,6 @@ jobs:
               label: 'Sprint 1'
             }
             const result = await github.graphql(query, variables)
+            let issues = result.repository.issues.nodes;
+            for (const issue of issues) {}
             console.log(result)
