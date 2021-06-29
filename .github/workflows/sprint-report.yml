@@ -23,7 +23,7 @@ jobs:
             const variables = {
               owner: context.repo.owner,
               name: context.repo.repo,
-              label: 'Sprin 1'
+              label: 'Sprint 1'
             }
             const result = await github.graphql(query, variables)
             console.log(result)
