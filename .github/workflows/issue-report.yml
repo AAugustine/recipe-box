@@ -26,7 +26,7 @@ jobs:
             const issues = ${{ steps.get_issues_by_label.outputs.data }}
             
             for (const issue of issues) {
-              const line;
+              const line = '';
               line = issue.title +','+ issue.number.toString()
               fs.writeFile(path,line,{flag: 'a'}, err=> {})
             }
