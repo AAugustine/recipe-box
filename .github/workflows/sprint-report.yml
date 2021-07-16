@@ -10,12 +10,29 @@ jobs:
         run: echo "$GITHUB_WORKSPACE"
       - uses: actions/github-script@v4
         with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const query = `query($owner:String!, $name:String!, $label:String!) {
-              repository(owner:$owner, name:$name){
-                issues(first:100, labels: [$label]) {
-                  nodes {
-                    id
+              organization(login: $owner) {
+                repository(name:$name) {
+                  issues(after: null, first: 100) {
+                    nodes {
+                      title
+                      labels(first: 100, after: null) {
+                        nodes {
+                          name
+                        }
+                      }
+                      assignees(first: 100, after: null) {
+                        nodes {
+                          login
+                        }
+                      }
+                    }
+                    pageInfo {
+                      endCursor
+                      hasNextPage
+                    }
                   }
                 }
               }
