@@ -16,9 +16,9 @@ jobs:
           script: |
             const commit_string = process.env.COMMIT_MESSAGE
             console.log(commit_string);
-            const re = new RegExp("/\[#VISTAOR-[0-9]/g");
-            console.log(re.test(commit_string));
-            if (re.test(commit_string)) {
+            const reg = /\[#VISTAOR-\d*]/
+            console.log(reg.test(commit_string));
+            if (reg.test(commit_string)) {
               console.log("Commit VALID");
             } else {
               console.log("Commit NOT VALID");
