@@ -9,6 +9,9 @@ jobs:
         run: |
           echo "${{toJSON(github.event.head_commit)}}"
       - name: Check commit message
-        run: |
-          s=${{ github.event.head_commit.message }}
-          [[ $s =~ /\[#VISTAOR-[0-9]/g ]] && echo matched
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const commit_string = ${{ github.event.head_commit.message }}
+            console.log(commit_string);
+        
