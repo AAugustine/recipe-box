@@ -2,7 +2,7 @@ name: Verify Commit Message
 on: push
 jobs:
   log-github-events-stuff:
-    name: "Log Head commit"
+    name: "Check Commit Message"
     runs-on: ubuntu-latest
     steps:
       - name: Logging event head commit
@@ -10,8 +10,10 @@ jobs:
           echo "${{toJSON(github.event.head_commit)}}"
       - name: Check commit message
         uses: actions/github-script@v4
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         with:
           script: |
-            const commit_string = ${{ github.event.head_commit.message }}
+            const commit_string = process.env.COMMIT_MESSAGE
             console.log(commit_string);
         
