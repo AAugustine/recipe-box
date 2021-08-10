@@ -2,9 +2,9 @@ name: Verify Commit Message
 on: push
 jobs:
   log-github-events-stuff:
-    name: "Log ALL THE THINGS"
+    name: "Log Head commit"
     runs-on: ubuntu-latest
     steps:
       - name: Logging event head commit
         run: |
-         echo "${{toJSON(github.event.head_commit.message)}}"
+         echo "${{toJSON(github.event.head_commit)}}"
