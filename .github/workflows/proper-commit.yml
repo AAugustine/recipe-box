@@ -7,4 +7,8 @@ jobs:
     steps:
       - name: Logging event head commit
         run: |
-         echo "${{toJSON(github.event.head_commit)}}"
+          echo "${{toJSON(github.event.head_commit)}}"
+      - name: Check commit message
+        run: |
+          s=${{ github.event.head_commit.message }}
+          [[ $s =~ /\[#VISTAOR-[0-9]/g ]] && echo matched
