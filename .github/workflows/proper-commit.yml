@@ -1,7 +1,5 @@
 name: Verify Commit Message
-on:
-  workflow_dispatch:
-
+on: push
 jobs:
   log-github-events-stuff:
     name: "Log ALL THE THINGS"
