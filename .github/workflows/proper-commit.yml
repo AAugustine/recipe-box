@@ -22,5 +22,6 @@ jobs:
               console.log("Commit VALID");
             } else {
               console.log("Commit NOT VALID");
+              core.setFailed("Commit message does not conform to standard");
             }
         
