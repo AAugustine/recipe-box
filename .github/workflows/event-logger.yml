@@ -1,0 +1,12 @@
+name: Event Logger
+on:
+  workflow_dispatch:
+
+jobs:
+  log-github-events-stuff:
+    name: "Log ALL THE THINGS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Logging
+        run: |
+         echo "${{toJSON(github.event)}}"
