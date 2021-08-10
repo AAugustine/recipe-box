@@ -5,6 +5,6 @@ jobs:
     name: "Log ALL THE THINGS"
     runs-on: ubuntu-latest
     steps:
-      - name: Logging
+      - name: Logging event head commit
         run: |
-         echo "${{toJSON(github.event)}}"
+         echo "${{toJSON(github.event.head_commit.message)}}"
