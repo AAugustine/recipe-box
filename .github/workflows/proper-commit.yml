@@ -14,7 +14,6 @@ jobs:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         with:
           script: |
-            
             const commit_string = process.env.COMMIT_MESSAGE
             console.log(commit_string);
             const re = new RegExp("/\[#VISTAOR-[0-9]/g");
