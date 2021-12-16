@@ -1,0 +1,139 @@
+name: Sprint Report
+on:
+  workflow_dispatch:
+    inputs:
+      sprint_name:
+        description: 'Sprint Label'
+        required: true
+        default: ''
+jobs:
+  getissueswithsprintlabel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        env:
+          SPRINT_NAME: ${{github.event.inputs.sprint_name}}
+        with:
+          script: |
+            const fs = require('fs')
+            const path = process.env.GITHUB_WORKSPACE+"/sprint-report.csv"
+            const query = `query($owner:String!, $name:String!, $label:[String!], $state:String!) {
+              organization(login: $owner) {
+                repository(name:$name) {
+                  issues(after: null, first: 100, filterBy: {states: $state}, labels:$label) {
+                    nodes {
+                      title
+                      labels(first: 100, after: null) {
+                        nodes {
+                          name
+                        }
+                      }
+                      assignees(first: 100, after: null) {
+                        nodes {
+                          login
+                        }
+                      }
+                    }
+                    pageInfo {
+                      endCursor
+                      hasNextPage
+                    }
+                  }
+                }
+              }
+            }`;
+            const closed_variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo,
+              label: process.env.SPRINT_NAME,
+              state: 'CLOSED'
+            }
+            const open_variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo,
+              label: process.env.SPRINT_NAME,
+              state: 'OPEN'
+            }
+            const ONE_POINT = "1 point";
+            const TWO_POINT = "2 points";
+            const THREE_POINT = "3 points";
+            const FOUR_POINT = "4 points";
+            const SIX_POINT = "6 points";
+            let REPORT_LIST = [];
+            const closed_result = await github.graphql(query, closed_variables)
+            const open_result = await github.graphql(query, open_variables)
+            let closed_issues = closed_result.organization.repository.issues.nodes;
+            let open_issues = open_result.organization.repository.issues.nodes;
+            let names = [];
+            console.log("Create report list");
+            for (const issue of closed_issues) {
+              let assignees = issue.assignees.nodes
+              for (const assignee of assignees){
+                names.push(assignee.login)
+              }
+            }
+            let uniq_names = [ ...new Set(names) ];
+            for (const n of uniq_names){
+              let p = {name:"", points: 0, assigned: 0};
+              p.name = n;
+              REPORT_LIST.push(p);
+            }
+            for (const p of REPORT_LIST){
+              console.log("Iterate closed issues");
+              for (const issue of closed_issues) {
+                if(p.name == issue.assignees.nodes[0].login){
+                  label_list = issue.labels.nodes
+                  for (const label of label_list){
+                    if(label.name == ONE_POINT){
+                      p.points = p.points + 1;
+                    }
+                    if(label.name == TWO_POINT){
+                      p.points = p.points + 2;
+                    }
+                    if(label.name == THREE_POINT){
+                      p.points = p.points + 3;
+                    }
+                    if(label.name == FOUR_POINT){
+                      p.points = p.points + 4;
+                    }
+                    if(label.name == SIX_POINT){
+                      p.points = p.points + 6;
+                    }
+                  } 
+                }
+              }
+              for(const open_issue of open_issues){
+              console.log("Iterate open issues");
+                if(p.name == open_issue.assignees.nodes[0].login){
+                  label_list = open_issue.labels.nodes
+                  for (const label of label_list){
+                    if(label.name == ONE_POINT){
+                      p.assigned = p.assigned + 1;
+                    }
+                    if(label.name == TWO_POINT){
+                      p.assigned = p.assigned + 2;
+                    }
+                    if(label.name == THREE_POINT){
+                      p.assigned = p.assigned + 3;
+                    }
+                    if(label.name == FOUR_POINT){
+                      p.assigned = p.assigned + 4;
+                    }
+                    if(label.name == SIX_POINT){
+                      p.assigned = p.assigned + 6;
+                    }
+                  } 
+                }
+              }
+            }
+            fs.appendFileSync(path, 'Name,Points_Committed,Points_Completed\n');
+            for (const p of REPORT_LIST){
+              let line = '';
+              line = p.name +','+ p.assigned +','+ p.points +'\n';
+              fs.writeFile(path,line,{flag: 'a'}, err=> {})
+            }
+      - name: Export CSV report
+        uses: actions/upload-artifact@v2
+        with:
+          name: issue-report
+          path: ${{github.workspace}}/sprint-report.csv
